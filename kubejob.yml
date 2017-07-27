@@ -1,0 +1,21 @@
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: cryptocompare-scrape
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cryptocompare-scrape
+            image: cstuntz/cryptocompare-scrape:1.8-002
+            env:
+            - name: CRYPTOURL
+              value: https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH&tsyms=USD,EUR,GBP,CNY,JPY
+            - name: MONGODBURL
+              value: 10.0.0.38
+            - name: MONGODBNAME
+              value: crypto
+          restartPolicy: Never
